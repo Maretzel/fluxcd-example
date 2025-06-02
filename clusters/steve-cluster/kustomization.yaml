@@ -1,0 +1,5 @@
+resources:
+  - mariadb/
+  - flyway/
+  - wiremock/
+  - steve/

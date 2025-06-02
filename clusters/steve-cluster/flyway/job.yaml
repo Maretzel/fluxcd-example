@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flyway-migrate
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - name: flyway
+          image: my-flyway-custom:latest
+          imagePullPolicy: IfNotPresent
+          command: ["flyway"]
+          args:
+            [
+              "-url=jdbc:mysql://mariadb.default.svc.cluster.local:3306/stevedb",
+              "-user=steve",
+              "-password=steve",
+              "migrate",
+            ]
+      restartPolicy: Never
