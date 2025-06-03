@@ -6,6 +6,15 @@ metadata:
 spec:
   template:
     spec:
+      initContainers:
+        - name: wait-for-mariadb
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -z mariadb.default.svc.cluster.local 3306; do echo waiting for mariadb; sleep 3; done",
+            ]
       containers:
         - name: flyway
           image: my-flyway-custom:latest
@@ -19,12 +28,3 @@ spec:
               "migrate",
             ]
       restartPolicy: Never
-      initContainers:
-        - name: wait-for-mariadb
-          image: busybox
-          command:
-            [
-              "sh",
-              "-c",
-              "until nc -z mariadb 3306; do echo waiting for mariadb; sleep 3; done",
-            ]
